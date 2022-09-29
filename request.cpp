@@ -1,6 +1,6 @@
 #include "request.h"
 
-using std::string, std::to_string;
+using std::string, std::to_string, std::ostream;
 
 Request::Request() : senderAddress(""), receiverAddress(""), clockCycles(0)
 {
@@ -22,4 +22,10 @@ string Request::getReceiverAddress()
 long Request::getClockCycles()
 {
     return clockCycles;
+}
+
+ostream& operator<<(ostream& os, const Request& req)
+{
+    os << "Request from " << req.senderAddress << " to " << req.receiverAddress;
+    return os;
 }
