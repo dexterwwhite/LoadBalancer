@@ -1,12 +1,12 @@
 #include "request.h"
 
-using std::string;
+using std::string, std::to_string;
 
 Request::Request() : senderAddress(""), receiverAddress(""), clockCycles(0)
 {
-    senderAddress = "abc";
-    receiverAddress = "def";
-    clockCycles = 1000;
+    senderAddress = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
+    receiverAddress = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
+    clockCycles = rand() % 500 + 1;
 }
 
 string Request::getSenderAddress()

@@ -2,6 +2,7 @@
 #define _REQUEST_H_
 
 #include <string>
+#include <stdlib.h>
 using std::string;
 
 class Request
