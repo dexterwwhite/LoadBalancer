@@ -2,14 +2,14 @@
 
 using std::string;
 
-WebServer::WebServer(string serverName) : name(serverName) {}
+WebServer::WebServer(int id, LoadBalancer* balancer) : serverId(id), loadBalancer(balancer) {}
 
-bool WebServer::processRequest(Request req)
+void WebServer::processRequest(Request req)
 {
     long i = 0;
     while(i < req.getClockCycles())
     {
         i++;
     }
-    return true;
+    loadBalancer->serverIsDone(serverId);
 }

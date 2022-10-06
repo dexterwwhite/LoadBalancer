@@ -9,10 +9,11 @@ using std::string;
 class WebServer
 {	
     private:
-        string name;
+        int serverId;
+        LoadBalancer* loadBalancer;
 
     public:
-        WebServer(string serverName);
+        WebServer(int id, LoadBalancer* balancer);
 
         bool processRequest(Request req);
 };
