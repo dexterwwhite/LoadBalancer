@@ -3,8 +3,11 @@
 
 #include <string>
 #include "request.h"
+#include "loadbalancer.h"
 
 using std::string;
+
+class LoadBalancer;
 
 class WebServer
 {	
@@ -15,7 +18,7 @@ class WebServer
     public:
         WebServer(int id, LoadBalancer* balancer);
 
-        bool processRequest(Request req);
+        void processRequest(Request req);
 };
 
 #endif

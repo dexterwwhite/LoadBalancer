@@ -1,39 +1,27 @@
 #include <iostream>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include "request.h"
-#include "queue.h"
+#include "loadbalancer.h"
 
-using std::cout, std::endl, std::string;
+using std::cout, std::endl;
 
-int main()
+LoadBalancer::LoadBalancer(int initialRequests, int numServers) : reqQueue(initialRequests), allServers(), readyServers(), mtx()
 {
-    srand(time(NULL));
-    Queue testQueue(5);
-    
-    cout << "Queue is empty: " << testQueue.isEmpty() << endl;
-    cout << "Queue size: " << testQueue.size() << endl;
+	for(int i = 0; i < numServers; i++)
+	{
+		WebServer server(i, this);
+		allServers.push_back(server);
+		readyServers.push(i);
+	}
+}
 
-    for(int i = 0; i < 5; i++)
-    {
-        cout << "Queue pop: " << testQueue.pop() << endl;
-    }
+void LoadBalancer::run(int runtime)
+{
+	for(int i = 1; i <= runtime; i++)
+	{
+		cout << "i: " << i << endl;
+	}
+}
 
-    cout << "Queue is empty: " << testQueue.isEmpty() << endl;
-    cout << "Queue size: " << testQueue.size() << endl;
-
-    Request req1;
-    Request req2;
-    testQueue.push(req1);
-    testQueue.push(req2);
-    cout << "Queue is empty: " << testQueue.isEmpty() << endl;
-    cout << "Queue size: " << testQueue.size() << endl;
-
-    cout << "Request 1: " << req1 << endl;
-    cout << "Request 2: " << req2 << endl;
-    cout << "Queue pop 1: " << testQueue.pop() << endl;
-    cout << "Queue pop 2: " << testQueue.pop() << endl;
-    cout << "Queue is empty: " << testQueue.isEmpty() << endl;
-    cout << "Queue size: " << testQueue.size() << endl;
-    return 0;
+void LoadBalancer::serverIsDone(int serverId)
+{
+	readyServers.push(serverId);
 }
