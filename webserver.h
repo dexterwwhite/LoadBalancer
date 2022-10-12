@@ -3,22 +3,18 @@
 
 #include <string>
 #include "request.h"
-#include "loadbalancer.h"
 
-using std::string;
-
-class LoadBalancer;
+using std::string, std::pair;
 
 class WebServer
 {	
     private:
         int serverId;
-        LoadBalancer* loadBalancer;
 
     public:
-        WebServer(int id, LoadBalancer* balancer);
+        WebServer(int id);
 
-        void processRequest(Request req);
+        pair<int, pair<int, Request>> processRequest(Request req, int currTime);
 };
 
 #endif

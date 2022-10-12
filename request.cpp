@@ -26,6 +26,6 @@ long Request::getClockCycles()
 
 ostream& operator<<(ostream& os, const Request& req)
 {
-    os << "Request from " << req.senderAddress << " to " << req.receiverAddress;
+    os << "request from " << req.senderAddress << " to " << req.receiverAddress;
     return os;
 }

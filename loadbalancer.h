@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <queue>
-#include <mutex>
+#include <unordered_map>
 #include "queue.h"
 #include "webserver.h"
 
@@ -15,13 +15,14 @@ class LoadBalancer
         Queue reqQueue;
         std::vector<WebServer> allServers;
         std::queue<int> readyServers;
-        std::mutex mtx;
+        std::unordered_map<int, pair<int, Request>> completedRequests;
+        int clock;
+        bool runToCompletion;
 
     public:
         LoadBalancer(int initialRequests, int numServers);
 
-        void run(int runningTime);
-        void serverIsDone(int serverId);
+        void run(int toCompletion, int runningTime);
 };
 
 #endif
