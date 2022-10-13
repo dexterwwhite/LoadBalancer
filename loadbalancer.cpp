@@ -15,23 +15,29 @@ LoadBalancer::LoadBalancer(int initialRequests, int numServers) : reqQueue(initi
 
 void LoadBalancer::run(int toCompletion, int runtime)
 {
+	//Checks whether LoadBalancer will run for runtime duration or until completion of Requests
 	if(toCompletion == 1)
 	{
 		runToCompletion = true;
 	}
 
+	//Used for tracking Request processing
+	int initialsize = reqQueue.size();
 	int addedCount = reqQueue.size();
 	int processedCount = 0;
 
+	//Main "run" loop
 	while(clock < runtime || runToCompletion)
 	{
-		if(clock < runtime && (clock % (rand() % 100 + 1) == 0))
+		//Adds Request objects to Request Queue randomly
+		if((rand() % 12 + 1) == 1)
 		{
 			Request req;
 			reqQueue.push(req);
 			addedCount++;
 		}
 
+		//Output Request processing completion if a request completion time exists at this clock cycle
 		if(completedRequests.find(clock) != completedRequests.end())
 		{
 			processedCount++;
@@ -39,10 +45,14 @@ void LoadBalancer::run(int toCompletion, int runtime)
 			readyServers.push(completedRequests.at(clock).first);
 			completedRequests.erase(clock);
 		}
-		if(readyServers.size() > 0 && !reqQueue.isEmpty())
+
+		//While there are available servers and Requests in the queue, loops until either of these are not the case
+		while(readyServers.size() > 0 && !reqQueue.isEmpty())
 		{
 			WebServer* server = &allServers.at(readyServers.front());
 			pair<int, pair<int, Request>> processedRequest = server->processRequest(reqQueue.pop(), clock);
+
+			//To ensure there are not duplicate key values added to the map, increments the requests completion time to next available integer.
 			while(completedRequests.find(processedRequest.first) != completedRequests.end())
 			{
 				processedRequest.first += 1;
@@ -50,13 +60,20 @@ void LoadBalancer::run(int toCompletion, int runtime)
 			completedRequests.insert({processedRequest.first, processedRequest.second});
 			readyServers.pop();
 		}
+
+		//Increments clock cycle
 		clock++;
 
-		if(clock > runtime && addedCount == processedCount)
+		//If all Requests within the Queue have been processed, the loop exits
+		if(addedCount == processedCount)
 		{
 			break;
 		}
 	}
+
+	//Outputs Request processing metrics
+	cout << "Initial Queue size: " << initialsize << endl;
+	cout << "Final Queue size: " << reqQueue.size() << endl;
 	cout << "Total Requests: " << addedCount << endl;
 	cout << "Processed Requests: " << processedCount << endl;
 }
