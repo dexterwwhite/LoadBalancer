@@ -6,7 +6,7 @@ Request::Request() : senderAddress(""), receiverAddress(""), clockCycles(0)
 {
     senderAddress = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
     receiverAddress = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
-    clockCycles = rand() % 500 + 1;
+    clockCycles = rand() % 175 + 1;
 }
 
 string Request::getSenderAddress()
