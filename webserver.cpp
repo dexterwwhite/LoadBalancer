@@ -1,7 +1,5 @@
 #include "webserver.h"
 
-using std::string;
-
 WebServer::WebServer(int id) : serverId(id) {}
 
 pair<int, pair<int, Request>> WebServer::processRequest(Request req, int currTime)
